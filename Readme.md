@@ -35,3 +35,6 @@ prefix + I - to install the plugins
 4. Install GCC https://linuxize.com/post/how-to-install-gcc-on-ubuntu-20-04/
 5. Install ccls sudo apt install ccls
 6. Run :PlugInstall inside `init.vim`
+
+## Install Rails
+https://gorails.com/setup/ubuntu/22.04
