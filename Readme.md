@@ -10,6 +10,10 @@ ln -s ~/.config/dotfiles/.xinitrc ~/.xinitrc &&
 ln -s ~/.config/dotfiles/i3 ~/.config/i3
 ```
 ### The i3 forlder in config might need to be removed before creating the simlink
+### Rofi package needs to be installed for i3 search menu to work
+```
+sudo apt install rofi
+```
 
 ## Install tmux plugin manager
  
