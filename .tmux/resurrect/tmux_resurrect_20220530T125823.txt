@@ -1,9 +1,0 @@
-pane	0	1	1	:*	0	Roach	:/home/catalin/code/play/quote-editor	1	nvim	:nvim -S
-pane	0	2	0	:	0	Roach	:/home/catalin/code/play/quote-editor	1	bash	:bash bin/dev
-pane	0	3	0	:-	0	Roach	:/home/catalin/code/play/quote-editor	1	bash	:
-pane	0	4	0	:	0	Roach	:/home/catalin	1	redis-server	:redis-server *:6379
-window	0	1	:nvim	1	:*	c17e,140x74,0,0,1	:
-window	0	2	:bash	0	:	c17f,140x74,0,0,2	:
-window	0	3	:bash	0	:-	c180,140x74,0,0,3	:
-window	0	4	:redis-server	0	:	c181,140x74,0,0,4	:
-state	0	

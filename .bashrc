@@ -94,3 +94,4 @@ alias beu="bundle exec unicorn -c config/unicorn.rb -E development"
 alias cd_work='cd /home/catalin/code/work'
 alias cd_play='cd /home/catalin/code/play'
 alias cd_advent='cd /home/catalin/code/play/advent_of_code'
+alias cd_dotfiles='cd ~/.config/dotfiles'
