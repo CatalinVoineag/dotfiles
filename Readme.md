@@ -23,3 +23,4 @@ tmux
 prefix + I - to install the plugins
 ```
  
+ ahshda
