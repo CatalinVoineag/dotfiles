@@ -22,5 +22,3 @@ ln -s ~/.config/dotfiles/i3 ~/.config/i3
 tmux
 prefix + I - to install the plugins
 ```
- 
- ahshda
