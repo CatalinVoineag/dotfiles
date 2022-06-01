@@ -1,0 +1,9 @@
+pane	0	1	1	:*	0	Roach	:/home/catalin/code/play/quote-editor	1	nvim	:nvim -S
+pane	0	2	0	:	0	Roach	:/home/catalin/code/play/quote-editor	1	puma	:puma 5.6.4 (tcp://localhost:3000) [quote-editor]
+pane	0	3	0	:-	0	Roach	:/home/catalin/code/play/quote-editor	1	ruby	:/usr/share/rvm/rubies/ruby-3.0.2/bin/ruby bin/rails c
+pane	0	4	0	:	0	Roach	:/home/catalin	1	bash	:
+window	0	1	:nvim	1	:*	cf9e,282x77,0,0,1	:
+window	0	2	:puma	0	:	c17f,140x74,0,0,2	:
+window	0	3	:ruby	0	:-	c183,140x74,0,0,6	:
+window	0	4	:bash	0	:	c182,140x74,0,0,5	:
+state	0	

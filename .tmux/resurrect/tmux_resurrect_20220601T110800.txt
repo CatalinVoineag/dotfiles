@@ -1,0 +1,5 @@
+pane	0	1	1	:*	0	Roach	:/home/catalin	1	bash	:
+pane	0	2	0	:-	0	Roach	:/home/catalin/.config/dotfiles	1	bash	:
+window	0	1	:bash	1	:*	c39d,282x74,0,0,0	:
+window	0	2	:bash	0	:-	c39e,282x74,0,0,1	:
+state	0	
