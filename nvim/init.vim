@@ -50,9 +50,9 @@ Plug 'OmniSharp/omnisharp-vim'
 Plug 'dense-analysis/ale'
 
 Plug 'autozimu/LanguageClient-neovim', {
-      \ 'branch': 'next',
-      \ 'do': 'bash install.sh',
-      \ }
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
 
 " (Optional) Multi-entry selection UI.
 Plug 'junegunn/fzf'
@@ -214,7 +214,11 @@ noremap <end> za
 set hidden
 
 let g:LanguageClient_serverCommands = {
-    \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio']
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+    \ 'python': ['/usr/local/bin/pyls'],
+    \ 'ruby': ['/home/catalin/.rvm/gems/ruby-3.1.2/bin/solargraph', 'stdio'],
     \ }
 
 let g:ale_linters = {

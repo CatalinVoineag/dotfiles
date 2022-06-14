@@ -35,6 +35,7 @@ prefix + I - to install the plugins
 4. Install GCC https://linuxize.com/post/how-to-install-gcc-on-ubuntu-20-04/
 5. Install ccls sudo apt install ccls
 6. Run :PlugInstall inside `init.vim`
+7. curl -LO https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb && sudo dpkg -i ripgrep_13.0.0_amd64.deb
 
 ## Install Rails
 https://gorails.com/setup/ubuntu/22.04
