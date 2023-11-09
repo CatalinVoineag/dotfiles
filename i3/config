@@ -141,6 +141,7 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 assign [class="Brave-browser"] $ws1
 assign [class="Gnome-terminal"] $ws2
 assign [class="Signal"] $ws3
+assign [class="Teams"] $ws3
 assign [class="Spotify"] $ws4
 
 # reload the configuration file
@@ -223,3 +224,6 @@ bar {
 
 # rofi
 bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 800 -opacity "85" -bw 0 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "System San Francisco Display 18"
+
+# screenshot
+bindsym $mod+Control+s exec gnome-screenshot -a
