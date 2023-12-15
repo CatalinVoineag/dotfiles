@@ -2,12 +2,7 @@ local lsp = require('lsp-zero')
 
 lsp.preset('recommended')
 
-lsp.ensure_installed({
-	'sumneko_lua',
-	'eslint',
-	'tsserver',
-	'solargraph'
-})
+
 
 lsp.on_attach(function(client, bufnr)
   local opts = {buffer = bufnr, remap = false}
@@ -27,20 +22,30 @@ lsp.on_attach(function(client, bufnr)
 end)
 
 --let g:LanguageClient_serverCommands = {
---    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
---    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
---    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
---    \ 'python': ['/usr/local/bin/pyls'],
---    \ 'ruby': ['~/.rvm/gems/ruby-3.1.2/bin/solargraph', 'stdio'],
---    \ }
+  --    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+  --    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+  --    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+  --    \ 'python': ['/usr/local/bin/pyls'],
+  --    \ 'ruby': ['~/.rvm/gems/ruby-3.1.2/bin/solargraph', 'stdio'],
+  --    \ }
 
-lsp.set_preferences({
-	sign_icons = {},
-  settings = {
-    solargraph = {
-      diagnostics = true
+  lsp.set_preferences({
+    sign_icons = {},
+    settings = {
+      solargraph = {
+        diagnostics = true
+      }
     }
-  }
-})
+  })
 
-lsp.setup()
+  require('mason').setup({})
+  require('mason-lspconfig').setup({
+    -- Replace the language servers listed here 
+    -- with the ones you want to install
+    ensure_installed = {'eslint', 'tsserver', 'solargraph'},
+    handlers = {
+      lsp.default_setup,
+    },
+  })
+
+  lsp.setup()

@@ -47,22 +47,22 @@ git_worktree.on_tree_change(function(op, metadata)
 
   if op == git_worktree.Operations.Switch then
   --if op == git_worktree.Operations.Create then
-    print('bundle install')
+    --print('bundle install')
+    --job:new({
+    --  command = 'bundle',
+    --  args = { 'install' }
+    --}):start()
+
+    print('bin/setup')
     job:new({
-      command = 'bundle',
-      args = { 'install' }
+      command = 'bin/setup'
     }):start()
 
-    print('bin/prepare')
-    job:new({
-      command = 'bin/prepare'
-    }):start()
-
-    print('copying database.yml')
+---- Check if the .env files is 2 directories back as well
+    print('copying .env')
     job:new({
       command = 'cp',
-      args = { '../../main/config/database.yml', 'config/database.yml' }
+      args = { '../main/.env', '.env' }
     }):start()
-
   end
 end)

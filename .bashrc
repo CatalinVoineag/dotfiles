@@ -92,8 +92,9 @@ alias bep="bundle exec puma -e development -C config/puma.rb"
 alias beu="bundle exec unicorn -c config/unicorn.rb -E development"
 
 alias cd_work='cd /home/catalin/code/work'
-alias cd_core='cd /home/catalin/code/work/core'
-alias cd_main='cd /home/catalin/code/work/core/main'
+alias cd_core='cd /home/catalin/code/work/itt-mentor-services'
+alias cd_main='cd /home/catalin/code/work/itt-mentor-services/main'
+
 alias cd_play='cd /home/catalin/code/play'
 alias cd_advent='cd /home/catalin/code/play/advent_of_code'
 alias cd_dotfiles='cd ~/.config/dotfiles'
@@ -104,3 +105,9 @@ alias run_laptop='xrandr --output eDP-1 --auto'
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+
+export NVM_DIR="/home/catalin/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+. /home/catalin/.asdf/asdf.sh
+
+complete -C /usr/bin/terraform terraform
