@@ -30,7 +30,11 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
-exec setxkbmap gb
+exec_always --no-startup-id greenclip daemon &
+
+exec_always --no-startup-id picom --config .config/picom/picom.conf
+
+exec_always nitrogen --restore
 
 # Use pactl to adjust volume in PulseAudio.
 # set $refresh_i3status killall -SIGUSR1 i3status
@@ -144,6 +148,7 @@ assign [class="Brave-browser"] $ws1
 assign [class="Gnome-terminal"] $ws2
 assign [class="Signal"] $ws3
 assign [class="Teams"] $ws3
+assign [class="Slack"] $ws3
 assign [class="Spotify"] $ws4
 
 # reload the configuration file
@@ -183,9 +188,13 @@ bindsym $mod+r mode "resize"
 bindsym $mod+Control+q exec i3lock
 
 # Pulse Audio controls
-bindsym Pause exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
-bindsym Scroll_Lock exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
-bindsym Print exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+bindsym 0x1008ff13 exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+bindsym 0x1008ff11 exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
+bindsym 0x1008ff12 exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+
+# Control brightness
+bindsym 0x1008ff02 exec --no-startup-id light -A 5
+bindsym 0x1008ff03 exec --no-startup-id light -U 5
 
 # Media player controls
 bindsym F10 exec playerctl play
@@ -229,3 +238,7 @@ bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 800 -opaci
 
 # screenshot
 bindsym $mod+Control+s exec gnome-screenshot -a
+
+# greenclip
+#bindsym $mod+0x13365567, exec rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+bindsym $mod+0x13365567, exec rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'

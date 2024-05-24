@@ -1,0 +1,12 @@
+find
+xargs
+fzf
+sed
+awk
+curl
+asdf
+git-worktree
+git-log
+git
+grep
+chmod

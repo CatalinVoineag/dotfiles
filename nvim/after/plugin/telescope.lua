@@ -62,7 +62,7 @@ git_worktree.on_tree_change(function(op, metadata)
     print('copying .env')
     job:new({
       command = 'cp',
-      args = { '../main/.env', '.env' }
+      args = { '../../main/.env', '.env' }
     }):start()
   end
 end)

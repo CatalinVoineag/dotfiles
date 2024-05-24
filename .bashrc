@@ -99,9 +99,11 @@ alias cd_play='cd /home/catalin/code/play'
 alias cd_advent='cd /home/catalin/code/play/advent_of_code'
 alias cd_dotfiles='cd ~/.config/dotfiles'
 
+alias upd="sudo apt update && sudo apt upgrade"
 
-alias run_monitor='xrandr --output HDMI-1 --auto && xrandr --output eDP-1 --off'
-alias run_laptop='xrandr --output eDP-1 --auto'
+alias run_monitor='xrandr --output HDMI-A-0 --mode 2560x1440 && xrandr --output eDP --off'
+
+alias run_laptop='xrandr --output eDP --auto'
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
@@ -111,3 +113,10 @@ export NVM_DIR="/home/catalin/.nvm"
 . /home/catalin/.asdf/asdf.sh
 
 complete -C /usr/bin/terraform terraform
+. /home/catalin/.asdf/asdf.sh
+
+# run tmux sessioniser
+bind -x '"\C-f": /home/catalin/.config/dotfiles/tmux-sessioniser'
+
+# Fzf bindings and completion
+source /usr/share/doc/fzf/examples/key-bindings.bash

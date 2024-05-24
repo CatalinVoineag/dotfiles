@@ -1,3 +1,5 @@
+require("catalin.go_to_test")
+
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>pv", vim.cmd.Vex)
 vim.keymap.set("n", "<leader>pe", vim.cmd.Ex)
@@ -34,3 +36,28 @@ vim.keymap.set("n", "<leader><CR>", ":so /home/catalin/.config/dotfiles/nvim/ini
 vim.keymap.set("n", "<end>", "za")
 
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
+
+-- Make current file executable
+vim.keymap.set("n", "<leader>e", ":!chmod +x %")
+
+-- tmux sessioniser
+vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww /home/catalin/.config/dotfiles/tmux-sessioniser<CR>")
+
+local function file_exists(filename)
+  local file = io.open(filename, "r")
+  if file then
+    file:close()
+    return true
+  else
+    return false
+  end
+end
+
+-- go to test file
+vim.keymap.set("n", "<leader>tv", function()
+  Go_to_test()
+end, {noremap = true})
+
+-- quickfix
+vim.keymap.set("n", "<C-j>", ":cnext<CR>")
+vim.keymap.set("n", "<C-k>", ":cprev<CR>")
