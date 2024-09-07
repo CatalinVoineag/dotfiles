@@ -24,6 +24,11 @@ vim.keymap.set("n", "Q", "<nop>")
 -- Find and replace the current word in the whole file
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
+-- yank to system clipboard
+vim.keymap.set("n", "<leader>y", "\"+y")
+vim.keymap.set("v", "<leader>y", "\"+y")
+vim.keymap.set("n", "<leader>y", "\"+Y")
+
 vim.keymap.set("n", "<leader>h", ":wincmd h<CR>")
 vim.keymap.set("n", "<leader>j", ":wincmd j<CR>")
 vim.keymap.set("n", "<leader>k", ":wincmd k<CR>")
@@ -42,16 +47,6 @@ vim.keymap.set("n", "<leader>e", ":!chmod +x %")
 
 -- tmux sessioniser
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww /home/catalin/.config/dotfiles/tmux-sessioniser<CR>")
-
-local function file_exists(filename)
-  local file = io.open(filename, "r")
-  if file then
-    file:close()
-    return true
-  else
-    return false
-  end
-end
 
 -- go to test file
 vim.keymap.set("n", "<leader>tv", function()

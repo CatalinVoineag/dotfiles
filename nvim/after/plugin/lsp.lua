@@ -1,51 +1,20 @@
- require("catalin.go_to_definition")
-  local lsp = require('lsp-zero')
+require("catalin.go_to_definition")
+local lsp = require('lsp-zero')
 
-  lsp.preset('recommended')
+lsp.preset('recommended')
 
-  --vim.lsp.set_log_level 'debug'
-  --if vim.fn.has 'nvim-0.5.1' == 1 then
-  --  require('vim.lsp.log').set_format_func(vim.inspect)
-  --end
+lsp.on_attach(function(client, bufnr)
+  local opts = {buffer = bufnr, remap = false}
 
-  lsp.on_attach(function(client, bufnr)
-    local opts = {buffer = bufnr, remap = false}
-
-    vim.keymap.set("n", "gc", vim.lsp.buf.references, opts)
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-    --vim.keymap.set("n", "gd", function()
-    --  Go_to_definition()
-    --end, {noremap = true})
-    --
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-    vim.keymap.set("n", "R",  function() vim.lsp.buf.rename() end,         { desc = '[R]ename symbol (with LSP)', buffer = bufnr, remap = false })
-
-    -- vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
-    -- vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, opts)
-    -- vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
-    -- vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
-    -- vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts)
-    -- vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
-    -- vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)
-    -- vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+  vim.keymap.set("n", "gc", vim.lsp.buf.references, opts)
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+  vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
+  vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
+  vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
+  vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
+  vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
   end)
-
-  --let g:LanguageClient_serverCommands = {
-    --    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    --    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-    --    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
-    --    \ 'python': ['/usr/local/bin/pyls'],
-    --    \ 'ruby': ['~/.rvm/gems/ruby-3.1.2/bin/solargraph', 'stdio'],
-    --    \ }
-
-    lsp.set_preferences({
-      sign_icons = {},
-      settings = {
-        solargraph = {
-          diagnostics = true
-        }
-      }
-    })
 
 local lsp_configurations = require('lspconfig.configs')
 
@@ -54,7 +23,7 @@ if not lsp_configurations.educationlsp then
     default_config = {
       name = "educationlsp",
       cmd = { "ruby", "/home/catalin/play/rpc/ruby.rb" },
-      filetypes = {"ruby"},
+      filetypes = {"ruby", "eruby"},
       root_dir = require('lspconfig.util').root_pattern('.git')
     }
   }
@@ -62,44 +31,67 @@ end
 
 require('lspconfig').educationlsp.setup({})
 
-    require('mason').setup({})
-    require('mason-lspconfig').setup({
-      -- Replace the language servers listed here 
-      -- with the ones you want to install
-      ensure_installed = {'solargraph', 'lua_ls'},
-      handlers = {
-        function(server_name)
-          require('lspconfig')[server_name].setup({})
-        end,
-      }
-    })
+require('mason').setup({})
+require('mason-lspconfig').setup({
+  -- Replace the language servers listed here 
+  -- with the ones you want to install
+  ensure_installed = {'lua_ls', 'gopls', 'htmx'},
+  handlers = {
+    function(server_name)
+      require('lspconfig')[server_name].setup({})
+    end,
+  }
+})
 
-    lsp.setup()
-
-
+lsp.setup()
 
 
-----vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
---vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-----vim.keymap.set("n", "e", vim.lsp.buf.code_action, opts)
-----vim.keymap.set("n", "e", vim.lsp.buf.completion, opts)
---
---local client = vim.lsp.start_client {
---  name = "educationlsp",
---  cmd = { "ruby", "/home/catalin/play/rpc/ruby.rb" }
---  --cmd = { "/home/catalin/play/educationlsp/main" }
---}
---
---if not client then
---  vim.notify("error")
---  return
---end
---
---
--- vim.api.nvim_create_autocmd("Filetype", {
---   pattern = "ruby",
---   callback = function()
---     vim.lsp.buf_attach_client(0, client)
---     print(client)
---   end,
--- })
+local lspconfig = require('lspconfig')
+lspconfig.solargraph.setup {
+  settings = {
+    diagnostics = true
+  }
+}
+
+-- Store the original handler
+local original_definition_handler = vim.lsp.handlers['textDocument/definition']
+
+-- Table to track if a response has been processed per buffer
+local processed_per_buf = {}
+
+local function custom_definition_handler(err, result, ctx, config)
+  -- Get the buffer number
+  local bufnr = ctx.bufnr
+  -- Initialize state for the buffer if it doesn't exist
+  if not processed_per_buf[bufnr] then
+    processed_per_buf[bufnr] = {processed = false}
+  end
+
+  -- Get the client name
+  local client_name = vim.lsp.get_client_by_id(ctx.client_id).name
+
+  -- Reset the state if there is an error or the result is nil
+  if err or not result then
+    processed_per_buf[bufnr].processed = false
+    return
+  end
+
+  -- Check if the result should be handled by the current client
+  if client_name == 'educationlsp' and result and result['priority'] then
+    processed_per_buf[bufnr].processed = true
+    vim.cmd.edit(result['uri'])
+  else
+    if not processed_per_buf[bufnr].processed then
+      processed_per_buf[bufnr].processed = true
+      original_definition_handler(err, result, ctx, config)
+    end
+  end
+
+  -- Reset the state for the next request
+  vim.defer_fn(function()
+    processed_per_buf[bufnr].processed = false
+  end, 1)
+end
+
+-- Set the custom handler for 'textDocument/definition'
+vim.lsp.handlers['textDocument/definition'] = custom_definition_handler

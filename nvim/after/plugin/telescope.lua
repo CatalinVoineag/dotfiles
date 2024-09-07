@@ -2,9 +2,37 @@ local git_worktree = require "git-worktree"
 local builtin = require('telescope.builtin')
 local telescope = require('telescope')
 local job = require('plenary.job')
---local file = require('file')
---
---requtire("debugger")
+local lfs = require("lfs")
+
+
+local function file_exists(filename)
+  local file = io.open(filename, "r")
+  if file then
+    file:close()
+    return true
+  else
+    return false
+  end
+end
+
+local function directory_exists(path)
+  local dir = lfs.attributes(path, "mode") == "directory"
+  if dir then
+    return true
+  else
+    return false
+  end
+end
+
+local function in_apply()
+  if tostring(vim.fn.expand("%:p:h:h:t")) == 'apply-for-teacher-training' then
+    return true
+  elseif tostring(vim.fn.expand("%:p:h:h:h:t")) == 'apply-for-teacher-training' then
+    return true
+  else
+    return false
+  end
+end
 
 telescope.load_extension = git_worktree
 
@@ -14,6 +42,8 @@ vim.keymap.set('n', '<leader>ps', function()
 	builtin.grep_string({ search = vim.fn.input("Grep > ")});
 end)
 vim.keymap.set("n", "<leader>bf", builtin.buffers, {})
+-- vim help menu
+vim.keymap.set('n', '<leader>vh', builtin.help_tags, {})
 
 vim.keymap.set("n", "<leader>gw", telescope.extensions.git_worktree.git_worktrees, {})
 -- <Enter> - switches to that worktree
@@ -47,22 +77,60 @@ git_worktree.on_tree_change(function(op, metadata)
 
   if op == git_worktree.Operations.Switch then
   --if op == git_worktree.Operations.Create then
-    --print('bundle install')
-    --job:new({
-    --  command = 'bundle',
-    --  args = { 'install' }
-    --}):start()
 
-    print('bin/setup')
-    job:new({
-      command = 'bin/setup'
-    }):start()
+--    print('bin/setup')
+--    job:new({
+--      command = 'bin/setup'
+--    }):start()
 
 ---- Check if the .env files is 2 directories back as well
-    print('copying .env')
-    job:new({
-      command = 'cp',
-      args = { '../../main/.env', '.env' }
-    }):start()
+--    print('copying .env')
+--    job:new({
+--      command = 'cp',
+--      args = { '../../main/.env', '.env' }
+--    }):start()
+--
+    if in_apply() then
+      if directory_exists("tmp/pids") == false then
+        os.execute("mkdir tmp/pids")
+      end
+      os.execute("chmod +x bin/dev")
+    end
+
+    if file_exists('../../main/.env') == true then
+      job:new({
+        command = 'cp',
+        args = { '../../main/.env', '.env' }
+      }):start()
+    end
+
+    if file_exists('../main/.env') == true then
+      job:new({
+        command = 'cp',
+        args = { '../main/.env', '.env' }
+      }):start()
+    end
+
+    if file_exists('../main/Caddyfile') == true then
+      job:new({
+        command = 'cp',
+        args = { '../main/Caddyfile', 'Caddyfile' }
+      }):start()
+    end
+
+    if file_exists('/home/catalin/work/.solargraph.yml') == true then
+      job:new({
+        command = 'cp',
+        args = { '/home/catalin/work/.solargraph.yml', '.solargraph.yml' }
+      }):start()
+    end
+
+    if file_exists('../../main/Caddyfile') == true then
+      job:new({
+        command = 'cp',
+        args = { '../../main/Caddyfile', 'Caddyfile' }
+      }):start()
+    end
   end
 end)
+

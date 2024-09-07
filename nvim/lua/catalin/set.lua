@@ -8,7 +8,7 @@ vim.opt.shiftwidth = 2
 vim.opt.softtabstop = 2
 vim.opt.expandtab = true
 
-vim.smartindent = 2
+vim.smartindent = true
 vim.opt.wrap = true
 
 vim.opt.swapfile = false
@@ -35,7 +35,7 @@ vim.opt.foldmethod="indent"
 vim.opt.foldlevelstart=10   -- opens most folds by default
 vim.opt.foldnestmax=10      -- 10 nested folds maximum
 
-vim.opt.clipboard = "unnamedplus"
+--vim.opt.clipboard = "unnamedplus"
 
 --vim.opt.list listchars=tab:\ \ ,trail:·
 
