@@ -56,3 +56,14 @@ end, {noremap = true})
 -- quickfix
 vim.keymap.set("n", "<C-j>", ":cnext<CR>")
 vim.keymap.set("n", "<C-k>", ":cprev<CR>")
+
+-- jump to beginning and end of def ruby
+vim.keymap.set("n", "[f", "?^\\s*def<CR>")
+vim.keymap.set("n", "]f", "/end<CR>")
+
+-- copy current file path/name
+vim.keymap.set("n", "<leader>f", ":let @+ = expand('%')<CR>") -- path to file
+vim.keymap.set("n", "<leader>F", ":let @+ = expand('%:t')<CR>") -- file name
+
+-- execute rubocop commands
+vim.keymap.set("n", "<leader>rb", ":!bundle exec rubocop % -A <CR><CR>")

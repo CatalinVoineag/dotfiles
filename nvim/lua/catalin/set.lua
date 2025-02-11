@@ -36,6 +36,7 @@ vim.opt.foldlevelstart=10   -- opens most folds by default
 vim.opt.foldnestmax=10      -- 10 nested folds maximum
 
 --vim.opt.clipboard = "unnamedplus"
+--vim.opt.clipboard = "xclip"
 
 --vim.opt.list listchars=tab:\ \ ,trail:·
 

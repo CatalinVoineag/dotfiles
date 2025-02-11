@@ -97,18 +97,20 @@ git_worktree.on_tree_change(function(op, metadata)
       os.execute("chmod +x bin/dev")
     end
 
-    if file_exists('../../main/.env') == true then
-      job:new({
-        command = 'cp',
-        args = { '../../main/.env', '.env' }
-      }):start()
-    end
+    if file_exists('.env') == false then
+      if file_exists('../../main/.env') == true then
+        job:new({
+          command = 'cp',
+          args = { '../../main/.env', '.env' }
+        }):start()
+      end
 
-    if file_exists('../main/.env') == true then
-      job:new({
-        command = 'cp',
-        args = { '../main/.env', '.env' }
-      }):start()
+      if file_exists('../main/.env') == true then
+        job:new({
+          command = 'cp',
+          args = { '../main/.env', '.env' }
+        }):start()
+      end
     end
 
     if file_exists('../main/Caddyfile') == true then
