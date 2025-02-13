@@ -29,17 +29,17 @@ prefix + I - to install the plugins
 ```
 
 ## Nvim Steps to install:
-1. Install nvim from source - https://github.com/neovim/neovim/wiki/Building-Neovim
-2. Install vim plug - https://github.com/junegunn/vim-plug
-3. Install Lua `sudo apt install lua`
-4. Install GCC https://linuxize.com/post/how-to-install-gcc-on-ubuntu-20-04/
-5. Install ccls sudo apt install ccls
-6. Run :PlugInstall inside `init.vim`
-7. curl -LO https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb && sudo dpkg -i ripgrep_13.0.0_amd64.deb
-8. install greenclip https://github.com/erebe/greenclip
-9. install xclip `sudo apt install xclip`
-10. install ripgrep `sudo apt install ripgrep`
-11. install light `sudo apt install light` and remove sudo `sudo chmod +s /usr/bin/light
+- Install nvim from source - https://github.com/neovim/neovim/wiki/Building-Neovim
+- Install Lua `sudo apt install lua`
+- `sudo apt install luarocks && sudo luarocks install luafilesystem`
+- Install GCC https://linuxize.com/post/how-to-install-gcc-on-ubuntu-20-04/
+- Install ccls sudo apt install ccls
+- curl -LO https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb && sudo dpkg -i ripgrep_13.0.0_amd64.deb
+- install greenclip https://github.com/erebe/greenclip
+- install xclip `sudo apt install xclip`
+- install ripgrep `sudo apt install ripgrep`
+- install light `sudo apt install light` and remove sudo `sudo chmod +s /usr/bin/light'
+- `sudo apt install fzf`
 
 ## Install Rails
 https://gorails.com/setup/ubuntu/22.04
