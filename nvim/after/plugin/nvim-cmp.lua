@@ -57,7 +57,7 @@ local fmt = require("luasnip.extras.fmt").fmt
 
 ls.add_snippets("eruby", {
   s("el", fmt("<%= {} %> {}", { i(1), i(0) })),
-  s("ei", fmt("<%= if {} do %>\n\t{}\n<% end %>{}", { i(1), i(2), i(0) })),
+  s("ei", fmt("<% if {} do %>\n\t{}\n<% end %>{}", { i(1), i(2), i(0) })),
 })
 
 vim.keymap.set({ "i", "s" }, "<c-k>", function()

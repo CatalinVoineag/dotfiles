@@ -53,10 +53,6 @@ vim.keymap.set("n", "<leader>tv", function()
   Go_to_test()
 end, {noremap = true})
 
--- quickfix
-vim.keymap.set("n", "<C-j>", ":cnext<CR>")
-vim.keymap.set("n", "<C-k>", ":cprev<CR>")
-
 -- jump to beginning and end of def ruby
 vim.keymap.set("n", "[f", "?^\\s*def<CR>")
 vim.keymap.set("n", "]f", "/end<CR>")
@@ -67,3 +63,93 @@ vim.keymap.set("n", "<leader>F", ":let @+ = expand('%:t')<CR>") -- file name
 
 -- execute rubocop commands
 vim.keymap.set("n", "<leader>rb", ":!bundle exec rubocop % -A <CR><CR>")
+
+-- review code
+local function review_quick_fix()
+  if Review ~= nil and BeforeReviewPath ~= nil then
+    vim.cmd(":only")
+    vim.cmd.edit(BeforeReviewPath)
+
+    Review = nil
+    BeforeReviewPath = nil
+    return
+  end
+
+  Review = true
+  BeforeReviewPath = (vim.fn.expand("%") ~= "" and vim.fn.expand("%")) or vim.fn.getcwd()
+
+  vim.cmd(":G difftool main")
+  vim.cmd(":Gvdiffsplit main")
+end
+
+vim.keymap.set("n", "<leader>gr", function()
+  review_quick_fix()
+end, {noremap=true})
+
+-- quickfix
+local function quickfix_next()
+  vim.cmd("silent! :cnext")
+
+  if Review == true then
+    vim.cmd(":Gvdiffsplit main")
+  end
+
+  local windows = vim.api.nvim_list_wins()
+  if #windows > 3 then
+    local second_to_last = windows[#windows - 1]
+    vim.api.nvim_win_close(second_to_last, true)
+  end
+end
+
+local function quickfix_prev()
+  vim.cmd("silent! :cprev")
+
+  if Review == true then
+    vim.cmd(":Gvdiffsplit main")
+  end
+
+  local windows = vim.api.nvim_list_wins()
+  if #windows > 3 then
+    local second_to_last = windows[#windows - 1]
+    vim.api.nvim_win_close(second_to_last, true)
+  end
+end
+
+vim.keymap.set("n", "<C-j>", function()
+  quickfix_next()
+end, {noremap=true})
+
+vim.keymap.set("n", "<C-k>", function()
+  quickfix_prev()
+end, {noremap=true})
+
+-- reset global variables when closing quickfix list
+vim.api.nvim_create_autocmd("WinClosed", {
+  pattern = "*",
+  callback = function(event)
+    local win_id = tonumber(event.match)
+    if vim.fn.getwininfo(win_id)[1].quickfix == 1 then
+      Review = nil
+      BeforeReviewPath = nil
+    end
+  end,
+})
+
+local function quickfix_in_windows(windows)
+  for _,window in ipairs(windows) do
+    if vim.fn.getwininfo(window)[1].quickfix == 1 then
+      return true
+    end
+  end
+
+  return false
+end
+
+vim.api.nvim_create_autocmd({"BufEnter"}, {
+  callback = function()
+    if quickfix_in_windows(vim.api.nvim_list_wins()) == false then
+      Review = nil
+      BeforeReviewPath = nil
+    end
+  end,
+})

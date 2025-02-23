@@ -47,7 +47,7 @@ exec_always nitrogen --restore
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec ghostty
 
 # kill focused window
 bindsym $mod+q kill
@@ -146,6 +146,7 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 
 assign [class="Brave-browser"] $ws1
 assign [class="Gnome-terminal"] $ws2
+assign [class="ghostty"] $ws2
 assign [class="Signal"] $ws3
 assign [class="Teams"] $ws3
 assign [class="Slack"] $ws3
