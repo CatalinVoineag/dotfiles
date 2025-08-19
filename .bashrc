@@ -120,3 +120,20 @@ bind -x '"\C-f": /home/catalin/.config/dotfiles/tmux-sessioniser'
 
 # Fzf bindings and completion
 source /usr/share/doc/fzf/examples/key-bindings.bash
+. "$HOME/.cargo/env"
+
+# Go paths
+export GOPATH="$HOME/go"
+export PATH="$GOPATH/bin:$PATH"
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+export KAMAL_REGISTRY_PASSWORD="Z*KvXRz$&SjtL8"
+
+export PATH=$PATH:/home/catalin/.spicetify
+
+# ruby install gem path
+export PATH="$HOME/.local/share/gem/ruby/3.3.0/bin:$PATH"
+
+export EDITOR=nvim

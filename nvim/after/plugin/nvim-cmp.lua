@@ -27,6 +27,7 @@ cmp.setup {
   },
 
   sources = {
+    { name = "nvim_lua" },
     { name = "nvim_lsp" },
     { name = "luasnip" },
     { name = "path" },
@@ -39,6 +40,45 @@ cmp.setup.filetype({"sql"}, {
     { name = "vim-dadbod-completion"},
     { name = "buffer"}
   }
+})
+
+local function file_exists_in_root(filename)
+  local root = vim.fn.getcwd()
+  local path = root .. "/" .. filename
+  return vim.fn.filereadable(path) == 1
+end
+
+if file_exists_in_root('dragoncmp') then
+  cmp.setup.filetype({"ruby"}, {
+    sources = {
+      { name = "nvim_lua" },
+      { name = "nvim_lsp" },
+      { name = "luasnip" },
+      { name = "path" },
+      { name = "buffer" },
+      { name = "my_custom"},
+    }
+  })
+end
+
+-- Require your custom DragonRuby docs source and initialize it.
+
+--local dragonruby_source = require("cmp_dragonruby_docs").new()
+--
+--cmp.setup.filetype("ruby", {
+--  sources = {
+--    { name = "dragonruby_docs", source = dragonruby_source },
+--    --{ name = "nvim_lsp" },
+--    --{ name = "buffer" },
+--  },
+--})
+--
+local items = require("dragonruby_completions")
+
+cmp.register_source("my_custom", {
+  complete = function(_, _, callback)
+    callback({ items = items, isIncomplete = false})
+  end,
 })
 
 local ls = require "luasnip"

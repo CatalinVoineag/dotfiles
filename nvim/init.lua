@@ -65,7 +65,7 @@ require("lazy").setup({
   { 'vim-test/vim-test' },
   { 'ThePrimeagen/git-worktree.nvim' },
   { 'tpope/vim-rhubarb' },
-  { 'vimwiki/vimwiki' },
+  --{ 'vimwiki/vimwiki' },
 
   -- Theme
   {
@@ -76,48 +76,29 @@ require("lazy").setup({
   },
   { 'xiyaowong/transparent.nvim' },
 
-  -- neorg notes
   {
-    "rebelot/kanagawa.nvim", -- neorg needs a colorscheme with treesitter support
-    config = function()
-      vim.cmd.colorscheme("kanagawa")
-    end,
-  },
-  {
-    "nvim-neorg/neorg",
-    lazy = false,
-    version = "*",
-    config = function()
-      require("neorg").setup {
-        load = {
-          ["core.defaults"] = {},
-          ["core.concealer"] = {
-            config = {
-              icons = {
-                todo = {
-                  done = {
-                    icon = "✓",
-                  },
-                  pending = {
-                    icon = "⚒",
-                  }
-                }
-              }
-            }
-          },
-          ["core.dirman"] = {
-            config = {
-              workspaces = {
-                notes = "~/notes",
-              },
-              default_workspace = "notes",
-            },
+    "epwalsh/obsidian.nvim",
+    version = "*",  -- recommended, use latest release instead of latest commit
+    lazy = true,
+    ft = "markdown",
+    -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+    -- event = {
+      --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+      --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
+      --   -- refer to `:h file-pattern` for more examples
+      --   "BufReadPre path/to/my-vault/*.md",
+      --   "BufNewFile path/to/my-vault/*.md",
+      -- },
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+      },
+      opts = {
+        workspaces = {
+          {
+            name = "personal",
+            path = "~/knowledge_grave",
           },
         },
-      }
-
-      vim.wo.foldlevel = 99
-      vim.wo.conceallevel = 2
-    end,
-  },
+      },
+    },
 }, {})

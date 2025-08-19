@@ -28,6 +28,7 @@ else
   tmux new-session -ds $session_name -c $session
   switch_to
 
+  ## This doesn't work unless tmux is started
   has_gemfile=$(find $session -mindepth 0 -maxdepth 1 -type f -name "Gemfile")
   if [[ -n "$has_gemfile" ]]; then
     tmux_setup

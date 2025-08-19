@@ -48,6 +48,15 @@ vim.keymap.set("n", "<leader>e", ":!chmod +x %")
 -- tmux sessioniser
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww /home/catalin/.config/dotfiles/tmux-sessioniser<CR>")
 
+-- Go to notes
+function GoToNotes()
+  vim.cmd.edit('~/knowledge_grave/index.md')
+end
+
+vim.keymap.set("n", "<leader>ww", function()
+  GoToNotes()
+end, {noremap = true})
+
 -- go to test file
 vim.keymap.set("n", "<leader>tv", function()
   Go_to_test()
@@ -62,9 +71,21 @@ vim.keymap.set("n", "<leader>f", ":let @+ = expand('%')<CR>") -- path to file
 vim.keymap.set("n", "<leader>F", ":let @+ = expand('%:t')<CR>") -- file name
 
 -- execute rubocop commands
-vim.keymap.set("n", "<leader>rb", ":!bundle exec rubocop % -A <CR><CR>")
+vim.keymap.set("n", "<leader>rb", ":!rubocop % -A <CR><CR>")
 
 -- review code
+local function set_buffs()
+  local buffs = {}
+
+  for _, window in ipairs(vim.api.nvim_list_wins()) do
+    if vim.fn.getwininfo(window)[1].quickfix ~= 1 then
+      table.insert(buffs, vim.api.nvim_win_get_buf(window))
+    end
+  end
+
+  vim.api.nvim_tabpage_set_var(0, 'CodeReviewBuffNumbers', buffs)
+end
+
 local function review_quick_fix()
   if Review ~= nil and BeforeReviewPath ~= nil then
     vim.cmd(":only")
@@ -78,8 +99,13 @@ local function review_quick_fix()
   Review = true
   BeforeReviewPath = (vim.fn.expand("%") ~= "" and vim.fn.expand("%")) or vim.fn.getcwd()
 
-  vim.cmd(":G difftool main")
-  vim.cmd(":Gvdiffsplit main")
+  --local main_hash = vim.cmd(":G log --merges -1 --format='%H'")
+  local main_hash = vim.fn.systemlist("git log --merges -1 --format=\\%H")[1]
+
+  vim.cmd(":G difftool " ..main_hash.. " HEAD")
+  vim.cmd("silent! :Gvdiffsplit " ..main_hash)
+
+  set_buffs()
 end
 
 vim.keymap.set("n", "<leader>gr", function()
@@ -91,7 +117,10 @@ local function quickfix_next()
   vim.cmd("silent! :cnext")
 
   if Review == true then
-    vim.cmd(":Gvdiffsplit main")
+    local main_hash = vim.fn.systemlist("git log --merges -1 --format=\\%H")[1]
+    vim.cmd("silent! :Gvdiffsplit " ..main_hash)
+
+    set_buffs()
   end
 
   local windows = vim.api.nvim_list_wins()
@@ -105,7 +134,10 @@ local function quickfix_prev()
   vim.cmd("silent! :cprev")
 
   if Review == true then
-    vim.cmd(":Gvdiffsplit main")
+    local main_hash = vim.fn.systemlist("git log --merges -1 --format=\\%H")[1]
+    vim.cmd("silent! :Gvdiffsplit " ..main_hash)
+
+    set_buffs()
   end
 
   local windows = vim.api.nvim_list_wins()
@@ -145,11 +177,57 @@ local function quickfix_in_windows(windows)
   return false
 end
 
+local function get_buffs()
+  local ok, buffs = pcall(vim.api.nvim_tabpage_get_var, 0, "CodeReviewBuffNumbers")
+  if not ok then
+    buffs = {}
+  end
+
+  return buffs
+end
+
+local function get_current_buffs_without_quickfix()
+  local windows = {}
+
+  for _, window in ipairs(vim.api.nvim_list_wins()) do
+    if vim.fn.getwininfo(window)[1].quickfix ~= 1 then
+      table.insert(windows, vim.api.nvim_win_get_buf(window))
+    end
+  end
+
+  return windows
+end
+
+local function has_value (tab, val)
+  for _, value in ipairs(tab) do
+    if value == val then
+      return true
+    end
+  end
+
+  return false
+end
+
 vim.api.nvim_create_autocmd({"BufEnter"}, {
   callback = function()
-    if quickfix_in_windows(vim.api.nvim_list_wins()) == false then
-      Review = nil
-      BeforeReviewPath = nil
+
+    local quick_fix_open = false
+    for _, window in ipairs(vim.api.nvim_list_wins()) do
+      if vim.fn.getwininfo(window)[1].quickfix ~= 1 then
+        quick_fix_open = true
+      end
+    end
+
+    if next(get_buffs()) ~= nil and quick_fix_open == true then
+      local current_buffs = get_current_buffs_without_quickfix()
+
+      for _index, buff_id in ipairs(get_buffs()) do
+        if has_value(current_buffs, buff_id) then
+          print("HERE BUFF ID " ..buff_id)
+          --Review = nil
+          --BeforeReviewPath = nil
+        end
+      end
     end
   end,
 })

@@ -145,6 +145,8 @@ bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
 assign [class="Brave-browser"] $ws1
+assign [class="google-chrome"] $ws1
+assign [class="Google-chrome"] $ws1
 assign [class="Gnome-terminal"] $ws2
 assign [class="ghostty"] $ws2
 assign [class="Signal"] $ws3
@@ -238,7 +240,7 @@ bar {
 bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 800 -opacity "85" -bw 0 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "System San Francisco Display 18"
 
 # screenshot
-bindsym $mod+Control+s exec gnome-screenshot -a
+bindsym $mod+Control+s exec flameshot gui
 
 # greenclip
 #bindsym $mod+0x13365567, exec rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'

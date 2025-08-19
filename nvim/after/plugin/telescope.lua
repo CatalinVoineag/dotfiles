@@ -4,6 +4,18 @@ local telescope = require('telescope')
 local job = require('plenary.job')
 local lfs = require("lfs")
 
+require('telescope').setup {
+  defaults = {
+    layout_strategy = 'horizontal',  -- or 'vertical', 'flex', etc.
+    layout_config = {
+      width = 0.99,
+      height = 0.99,
+      horizontal = {
+        preview_width = 0.65
+      },
+    },
+  },
+}
 
 local function file_exists(filename)
   local file = io.open(filename, "r")
@@ -35,6 +47,26 @@ local function in_apply()
 end
 
 telescope.load_extension = git_worktree
+
+local function in_obsidian_vault()
+  if tostring(vim.fn.expand("%:p:h:t")) == 'knowledge_grave' then
+    return true
+  else
+    return false
+  end
+end
+
+
+-- Then override for vault buffers
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function()
+    if in_obsidian_vault() then
+      vim.keymap.set("n", "<C-p>", "<cmd>ObsidianSearch<cr>", {
+        buffer = true, desc = "Toggle Obsidian search" })
+    end
+  end,
+})
+
 
 vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})

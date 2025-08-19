@@ -16,6 +16,8 @@ vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
 
+--vim.opt.cmdheight=5
+
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 vim.opt.ignorecase = true
@@ -34,6 +36,8 @@ vim.opt.colorcolumn = "80"
 vim.opt.foldmethod="indent"
 vim.opt.foldlevelstart=10   -- opens most folds by default
 vim.opt.foldnestmax=10      -- 10 nested folds maximum
+
+vim.opt.conceallevel = 1
 
 --vim.opt.clipboard = "unnamedplus"
 --vim.opt.clipboard = "xclip"
